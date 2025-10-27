@@ -25,8 +25,9 @@ export default function App() {
 
   const scrollGallery = (direction: 'left' | 'right') => {
     if (galleryRef.current) {
-      const scrollAmount = direction === 'left' ? -300 : 300;
-      galleryRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      const SCROLL_AMOUNT = 300;
+      const scrollOffset = direction === 'left' ? -SCROLL_AMOUNT : SCROLL_AMOUNT;
+      galleryRef.current.scrollBy({ left: scrollOffset, behavior: 'smooth' });
     }
   };
 
@@ -39,12 +40,12 @@ export default function App() {
     {
       id: 'experiences',
       label: 'Experiences',
-      content: `Hello! I'm Dave, your sales rep here from Salesforce. I've been working at this awesome company for 3 years now.\n\nI was born and raised in Albany, NY & have been living in Santa Carla for the past 10 years with my wife Tiffany and my 4-year-old twin daughters — Emma and Ella. Both of them are just starting school, so my calendar is usually blocked between 9–10 AM.`,
+      content: `I have over 5 years of experience in B2B SaaS sales, with a proven track record of exceeding quotas by 120% consistently.\n\nMy expertise includes enterprise sales, consultative selling, and building long-term client relationships. I've successfully closed deals ranging from $50K to $500K ARR and have been recognized as "Top Sales Performer" for two consecutive years.`,
     },
     {
       id: 'recommended',
       label: 'Recommended',
-      content: `Hello! I'm Dave, your sales rep here from Salesforce. I've been working at this awesome company for 3 years now.\n\nI was born and raised in Albany, NY & have been living in Santa Carla for the past 10 years with my wife Tiffany and my 4-year-old twin daughters — Emma and Ella. Both of them are just starting school, so my calendar is usually blocked between 9–10 AM.`,
+      content: `Based on our conversation, I'd recommend exploring our Enterprise plan which includes advanced analytics, dedicated support, and custom integrations.\n\nThis tier has been particularly successful for companies of your size and industry vertical. I'd be happy to schedule a demo to walk through how these features can specifically address your team's needs.`,
     },
   ];
 
