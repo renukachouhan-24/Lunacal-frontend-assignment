@@ -2,25 +2,26 @@ import { useState, useRef, useEffect } from 'react';
 import { Plus, ChevronLeft, ChevronRight, HelpCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+// 1. Import your image file from the assets folder
+import newImage from './assets/new.png'; 
+
 export default function App() {
   const [activeTab, setActiveTab] = useState('about');
+  
+  // 2. Initialize the 'images' state to use new.png for the first three slots
   const [images, setImages] = useState([
-    'data:image/svg+xml,%3Csvg width="400" height="300" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="400" height="300" fill="%234A90E2"/%3E%3Ctext x="50%25" y="50%25" font-size="24" fill="white" text-anchor="middle" dy=".3em"%3EImage 1%3C/text%3E%3C/svg%3E',
-    'data:image/svg+xml,%3Csvg width="400" height="300" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="400" height="300" fill="%2350E3C2"/%3E%3Ctext x="50%25" y="50%25" font-size="24" fill="white" text-anchor="middle" dy=".3em"%3EImage 2%3C/text%3E%3C/svg%3E',
-    'data:image/svg+xml,%3Csvg width="400" height="300" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="400" height="300" fill="%23E3B450"/%3E%3Ctext x="50%25" y="50%25" font-size="24" fill="white" text-anchor="middle" dy=".3em"%3EImage 3%3C/text%3E%3C/svg%3E',
+    newImage, // Image 1
+    newImage, // Image 2
+    newImage, // Image 3
   ]);
 
   const galleryRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
 
+  // 3. Update the addImage function to add new.png (or any desired real image)
   const addImage = () => {
-    const newImages = [
-      'data:image/svg+xml,%3Csvg width="400" height="300" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="400" height="300" fill="%23E35050"/%3E%3Ctext x="50%25" y="50%25" font-size="24" fill="white" text-anchor="middle" dy=".3em"%3EImage 4%3C/text%3E%3C/svg%3E',
-      'data:image/svg+xml,%3Csvg width="400" height="300" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="400" height="300" fill="%239B59B6"/%3E%3Ctext x="50%25" y="50%25" font-size="24" fill="white" text-anchor="middle" dy=".3em"%3EImage 5%3C/text%3E%3C/svg%3E',
-      'data:image/svg+xml,%3Csvg width="400" height="300" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="400" height="300" fill="%2334495E"/%3E%3Ctext x="50%25" y="50%25" font-size="24" fill="white" text-anchor="middle" dy=".3em"%3EImage 6%3C/text%3E%3C/svg%3E',
-    ];
-    const randomImage = newImages[Math.floor(Math.random() * newImages.length)];
-    setImages([...images, randomImage]);
+    // Adding the actual image when the button is clicked
+    setImages([...images, newImage]);
   };
 
   const scrollGallery = (direction: 'left' | 'right') => {
@@ -55,6 +56,7 @@ export default function App() {
     const updateIndicator = () => {
       const activeTabElement = tabRefs.current[activeTab];
       if (activeTabElement) {
+        // Use requestAnimationFrame for smooth styling updates
         requestAnimationFrame(() => {
           setIndicatorStyle({
             left: activeTabElement.offsetLeft,
@@ -70,7 +72,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#121417] flex">
-      {/* Left half empty */}
+      {/* Left half empty - Responsive requirement fulfilled by lg:w-1/2 */}
       <div className="hidden lg:block lg:w-1/2"></div>
 
       {/* Right half content */}
@@ -91,7 +93,7 @@ export default function App() {
 
           <div className="ml-12 p-1.5 mb-6 relative">
             <div className="relative flex gap-2 bg-[#1E1E22] rounded-2xl p-1.5">
-              {/* Animated background for active tab */}
+              {/* Animated background for active tab using framer-motion */}
               <motion.div
                 layoutId="activeTab"
                 className="absolute top-1.5 bottom-1.5 rounded-2xl bg-[#28292F]"
@@ -122,9 +124,10 @@ export default function App() {
                 >
                   <span className="relative z-10">{tab.label}</span>
 
-                  {/* Light reflection on hover */}
+                  {/* Light reflection effect on hover (for UI replication) */}
                   <div className="absolute inset-0 overflow-hidden pointer-events-none">
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      {/* You might need to define 'animate-glass' in your main CSS file */}
                       <div className="absolute top-0 left-[-200%] w-[400%] h-full bg-gradient-to-r from-transparent via-white/15 to-transparent animate-glass" />
                     </div>
                   </div>
@@ -198,7 +201,12 @@ export default function App() {
           {/* Gallery images */}
           <div
             ref={galleryRef}
-            className="ml-12 flex gap-5 overflow-hidden pb-2 scroll-smooth select-none"
+            className="ml-12 flex gap-5 overflow-x-auto pb-2 scroll-smooth select-none"
+            // Ensure scrollbar is hidden if necessary for UI replication
+            style={{
+                scrollbarWidth: 'none', /* Firefox */
+                msOverflowStyle: 'none',  /* IE and Edge */
+            }}
           >
             {images.map((image, index) => (
               <div
@@ -230,4 +238,3 @@ export default function App() {
     </div>
   );
 }
-
